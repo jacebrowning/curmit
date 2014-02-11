@@ -198,15 +198,13 @@ def flagged(cwd):
                 logging.debug("not a text file: {}".format(path))
 
 
-def urltext(url, google_doc=True):
+def urltext(url):
     """Get lines of text from a URL."""
 
     logging.info("grabbing {}...".format(url))
 
     # Build command
     args = [sys.executable, '-m', 'html2text']
-    if google_doc:
-        args.append('--google-doc')
     args.append(url)
 
     # Run command
