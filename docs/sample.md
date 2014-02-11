@@ -6,4 +6,5 @@
 
 This contents will automatically be commited to a text file by `curmit`.
 
-**That's cool!**
+**That's cool!**  
+a test
