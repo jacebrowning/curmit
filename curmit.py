@@ -5,10 +5,13 @@ Grabs text from a URL and commits it.
 """
 
 import os
+import re
 import sys
+import subprocess
 import argparse
 import logging
 from pkg_resources import get_distribution, DistributionNotFound
+
 
 __project__ = 'curmit'
 __version__ = None  # required for initial installation
@@ -19,6 +22,18 @@ except DistributionNotFound:  # pragma: no cover, manual test
 else:
     VERSION = __project__ + '-' + __version__
 CLI = __project__
+
+
+# User settings
+IGNORED_DIRNAMES = ('.git', 'env', '.cache')
+MAX_SEARCH_LINE = 5
+
+# Constants
+RE_FLAG = re.compile(r"""
+\bcurmit:       # the flag
+\               # a space
+(?P<url>\S+)    # any non-whitespace (the URL)
+""", re.VERBOSE)
 
 
 # Logging settings
@@ -66,29 +81,6 @@ def main(args=None):
 
     # Main parser
     parser = argparse.ArgumentParser(prog=CLI, description=__doc__, **SHARED)
-    parser.add_argument('-g', '--gui', action='store_true',
-                        help="launch the GUI")
-    parser.add_argument('-d', '--daemon', action='store_true',
-                        help="if terminal mode, run forever")
-    parser.add_argument('-q', '--no-log', action='store_true',
-                        help="do not create a log for downloads")
-    # TODO: support sharing multiple songs
-    parser.add_argument('-s', '--share', metavar='PATH',
-                        help="recommend a song")
-    parser.add_argument('-i', '--incoming', action='store_true',
-                        help="display the incoming songs")
-    parser.add_argument('-o', '--outgoing', action='store_true',
-                        help="display the outgoing songs")
-    parser.add_argument('-u', '--users', metavar='n', nargs='*',
-                        help="filter to the specified usernames")
-    parser.add_argument('-n', '--new', metavar='FirstLast',
-                        help="create a new user")
-    parser.add_argument('-x', '--delete', action='store_true',
-                        help="delete the current user")
-    # Hidden argument to override the root sharing directory path
-    parser.add_argument('--root', metavar="PATH", help=argparse.SUPPRESS)
-    # Hidden argument to run the program as a different user
-    parser.add_argument('--test', metavar='FirstLast', help=argparse.SUPPRESS)
 
     # Parse arguments
     args = parser.parse_args(args=args)
@@ -103,7 +95,7 @@ def main(args=None):
         logging.debug("command cancelled")
     else:
         if success:
-            logging.debug("command succedded")
+            logging.debug("command succeeded")
         else:
             logging.debug("command failed")
             sys.exit(1)
@@ -139,7 +131,95 @@ def _run(args, cwd, err):  # pylint: disable=W0613
     @param cwd: current working directory
     @param err: function to call for CLI errors
     """
-    return False
+    git('reset')
+
+    for path, header, url in flagged(cwd):
+        body = urltext(url)
+        logging.info("updating {}...".format(path))
+        with open(path, 'w') as outfile:
+            for line in header:
+                outfile.write(line + '\n')
+            for line in body:
+                outfile.write(line + '\n')
+        git('add', path)
+
+    if git('diff', '--cached', '--exit-code'):
+        git('commit', '-m', "curmit", show=True)
+        git('push', show=True)
+
+    return True
+
+
+def flagged(cwd):
+    """Yield every text file containing a flag.
+
+    @return: generator of path, flag text, URL
+    """
+    for root, dirnames, filenames in os.walk(cwd):
+        for ignored_dirname in IGNORED_DIRNAMES:
+            if ignored_dirname in dirnames:
+                dirnames.remove(ignored_dirname)
+        for filename in filenames:
+            path = os.path.join(root, filename)
+            try:
+                with open(path, 'r+') as infile:
+                    url = None
+                    header = []
+                    for index, line in enumerate(infile, start=1):
+
+                        header.append(line)
+
+                        if url:
+                            if not line.strip():
+                                break  # blank line after found flag
+                        else:
+                            match = RE_FLAG.search(line)
+                            if match:
+                                logging.info("flag in: {}".format(path))
+                                url = match.group('url')
+
+                        if index >= MAX_SEARCH_LINE:
+                            break
+                    else:
+                        logging.info("no flag in: {}".format(path))
+                    if url:
+                        yield path, header, url
+
+            except UnicodeDecodeError:
+                logging.debug("not a text file: {}".format(path))
+
+
+def urltext(url, google_doc=True):
+    """Get lines of text from a URL."""
+
+    logging.info("grabbing {}...".format(url))
+
+    # Build command
+    args = [sys.executable, '-m', 'html2text']
+    if google_doc:
+        args.append('--google-doc')
+    args.append(url)
+
+    # Run command
+    logging.debug("$ {}".format(' '.join(str(a) for a in args)))
+    process = subprocess.Popen(args, stdout=subprocess.PIPE)
+
+    out = process.communicate()[0]
+    lines = out.decode('utf-8').strip().split('\n')
+
+    return lines
+
+
+def git(*args, show=False):
+    """Call git with arguments."""
+
+    args = ['git'] + list(args)
+    logging.debug("$ {}".format(' '.join(str(a) for a in args)))
+    if show:
+        return subprocess.call(args)
+    else:
+        devnull = open(os.devnull, 'w')
+        return subprocess.call(args, stdout=devnull, stderr=subprocess.STDOUT)
 
 
 if __name__ == '__main__':  # pragma: no cover, manual test

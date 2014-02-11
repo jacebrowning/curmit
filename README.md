@@ -39,6 +39,8 @@ Setup
 
         curmit: https://docs.google.com/document/d/<DocumentID>/pub?embedded=true
 
+    (with a URL of your chosing)
+
 
 
 Usage
