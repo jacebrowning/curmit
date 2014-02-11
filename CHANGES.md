@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.0.1 (development)
-------------------
+0.0.1 (2014/02/10)
+-------------------
 
- - Initial release.
+ - Initial development release.

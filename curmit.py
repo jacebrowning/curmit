@@ -156,9 +156,13 @@ def flagged(cwd):
     @return: generator of path, flag text, URL
     """
     for root, dirnames, filenames in os.walk(cwd):
+
+        # Remove ignored directory names
         for ignored_dirname in IGNORED_DIRNAMES:
             if ignored_dirname in dirnames:
                 dirnames.remove(ignored_dirname)
+
+        # Locate all flagged files
         for filename in filenames:
             path = os.path.join(root, filename)
             try:
@@ -205,7 +209,7 @@ def urltext(url, google_doc=True):
     process = subprocess.Popen(args, stdout=subprocess.PIPE)
 
     out = process.communicate()[0]
-    lines = out.decode('utf-8').strip().split('\n')
+    lines = out.decode('utf-8').strip().split('\n')  # pylint: disable=E1101
 
     return lines
 

@@ -69,7 +69,7 @@ README.rst: README.md
 
 .PHONY: apidocs
 apidocs: depends apidocs/$(PROJECT).m.html
-apidocs/$(PACKAGE)/index.html: $(SOURCES)
+apidocs/$(PROJECT).m.html: $(SOURCES)
 	$(PYTHON) $(PDOC) --html --overwrite curmit.py --html-dir apidocs
 
 .PHONY: read

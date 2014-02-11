@@ -8,16 +8,16 @@ import setuptools
 
 from curmit import __project__, CLI
 
-# Touch the README, it will be generated on release
-README = 'README.rst'
 import os
-if not os.path.exists(README):
-    open(README, 'wb').close()
-CHANGES = 'CHANGES.md'
+if os.path.exists('README.rst'):
+    README = open('README.rst').read()
+else:
+    README = ""
+CHANGES = open('CHANGES.md').read()
 
 setuptools.setup(
     name=__project__,
-    version='0.0.0',
+    version='0.0.1',
 
     description="Grabs text from a URL and commits it.",
     url='http://github.com/jacebrowning/curmit',
@@ -28,8 +28,7 @@ setuptools.setup(
 
     entry_points={'console_scripts': [CLI + ' = curmit:main']},
 
-    long_description=(open(README).read() + '\n' +
-                      open(CHANGES).read()),
+    long_description=(README + '\n' + CHANGES),
     license='LGPL',
     classifiers=[
         'Development Status :: 3 - Alpha',
