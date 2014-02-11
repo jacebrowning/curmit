@@ -35,11 +35,9 @@ RE_FLAG = re.compile(r"""
 (?P<url>\S+)    # any non-whitespace (the URL)
 """, re.VERBOSE)
 
-
 # Logging settings
 DEFAULT_LOGGING_FORMAT = "%(message)s"
 VERBOSE_LOGGING_FORMAT = "%(levelname)s: %(message)s"
-VERBOSE2_LOGGING_FORMAT = "%(levelname)s: %(module)s:%(lineno)d: %(message)s"
 DEFAULT_LOGGING_LEVEL = logging.WARNING
 VERBOSE_LOGGING_LEVEL = logging.INFO
 VERBOSE2_LOGGING_LEVEL = logging.DEBUG
@@ -81,6 +79,10 @@ def main(args=None):
 
     # Main parser
     parser = argparse.ArgumentParser(prog=CLI, description=__doc__, **SHARED)
+    parser.add_argument('--no-update', action='store_true',
+                        help="do not modify files, just display contents")
+    parser.add_argument('--no-commit', action='store_true',
+                        help="do not commit changes to files")
 
     # Parse arguments
     args = parser.parse_args(args=args)
@@ -111,13 +113,11 @@ def _configure_logging(verbosity=0):
         verbose_format = VERBOSE_LOGGING_FORMAT
     elif verbosity == 1:
         level = VERBOSE_LOGGING_LEVEL
-        default_format = verbose_format = VERBOSE_LOGGING_FORMAT
-    elif verbosity == 2:
-        level = VERBOSE2_LOGGING_LEVEL
-        default_format = verbose_format = VERBOSE_LOGGING_FORMAT
+        default_format = DEFAULT_LOGGING_FORMAT
+        verbose_format = VERBOSE_LOGGING_FORMAT
     else:
         level = VERBOSE2_LOGGING_LEVEL
-        default_format = verbose_format = VERBOSE2_LOGGING_FORMAT
+        default_format = verbose_format = VERBOSE_LOGGING_FORMAT
 
     # Set a custom formatter
     logging.basicConfig(level=level)
@@ -131,21 +131,26 @@ def _run(args, cwd, err):  # pylint: disable=W0613
     @param cwd: current working directory
     @param err: function to call for CLI errors
     """
-    git('reset')
+    git('reset', _dry=args.no_commit)
 
     for path, header, url in flagged(cwd):
-        body = urltext(url)
+        lines = header + urltext(url)
         logging.info("updating {}...".format(path))
-        with open(path, 'w') as outfile:
-            for line in header:
-                outfile.write(line + '\n')
-            for line in body:
-                outfile.write(line + '\n')
-        git('add', path)
+        if args.no_update:
+            for line in lines:
+                print(line)
+        else:
+            with open(path, 'w') as outfile:
+                for line in lines:
+                    outfile.write(line + '\n')
+        git('add', path, _dry=args.no_commit)
 
     if git('diff', '--cached', '--exit-code'):
-        git('commit', '-m', "curmit", show=True)
-        git('push', show=True)
+        logging.info("committing changes...")
+        git('commit', '-m', "curmit", _show=True, _dry=args.no_commit)
+        git('push', _show=True, _dry=args.no_commit)
+    else:
+        logging.info("no changes to commit")
 
     return True
 
@@ -179,7 +184,7 @@ def flagged(cwd):
                         else:
                             match = RE_FLAG.search(line)
                             if match:
-                                logging.info("flag in: {}".format(path))
+                                logging.info("found flag in: {}".format(path))
                                 url = match.group('url')
 
                         if index >= MAX_SEARCH_LINE:
@@ -214,12 +219,16 @@ def urltext(url, google_doc=True):
     return lines
 
 
-def git(*args, show=False):
+def git(*args, _show=False, _dry=False):
     """Call git with arguments."""
-
-    args = ['git'] + list(args)
+    if _dry:
+        args = ['git #'] + list(args)
+    else:
+        args = ['git'] + list(args)
     logging.debug("$ {}".format(' '.join(str(a) for a in args)))
-    if show:
+    if _dry:
+        return 0
+    if _show:
         return subprocess.call(args)
     else:
         devnull = open(os.devnull, 'w')
