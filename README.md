@@ -37,14 +37,14 @@ Setup
 1. Create a new text file
 2. Add the following somewhere in the first few lines:
 
-    curmit: https://docs.google.com/document/d/<DocumentID>/pub?embedded=true
+        curmit: https://docs.google.com/document/d/<DocumentID>/pub?embedded=true
 
 
 
 Usage
 =====
 
-To update every flagged file with the current URL text and commit/push:
+To update every flagged file with the current URL text, commit, and push:
 
     curmit
 
