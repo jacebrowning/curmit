@@ -6,7 +6,7 @@ Setup script for curmit.
 
 import setuptools
 
-from curmit import __project__, CLI
+from curmit import __project__, __version__, CLI
 
 import os
 if os.path.exists('README.rst'):
@@ -17,7 +17,7 @@ CHANGES = open('CHANGES.md').read()
 
 setuptools.setup(
     name=__project__,
-    version='0.1.1',
+    version=__version__,
 
     description="Grabs text from a URL and commits it.",
     url='http://github.com/jacebrowning/curmit',
