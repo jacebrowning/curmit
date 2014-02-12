@@ -149,7 +149,8 @@ def _run(args, cwd, err):  # pylint: disable=W0613
         git('add', path, _dry=args.no_commit)
         if git('diff', '--cached', '--exit-code'):
             logging.info("committing {}...".format(path))
-            message = "curmit: {}".format(url)
+            message = "curmit: {}".format(url.replace("/pub?embedded=true",
+                                                      '/edit'))
             git('commit', '-m', message, _show=True, _dry=args.no_commit)
             changes = True
         else:
@@ -178,7 +179,7 @@ def flagged(cwd):
         for filename in filenames:
             path = os.path.join(root, filename)
             try:
-                with open(path, 'r+') as infile:
+                with open(path, 'r') as infile:
                     url = None
                     header = []
                     for index, line in enumerate(infile, start=1):
