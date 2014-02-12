@@ -7,6 +7,12 @@ curmit
 
 Grabs text from a URL and commits it.
 
+Some possible use cases:
+
+ - collaborate on Markdown/LaTeX using Google Drive
+ - incorporate and link to online code snippets 
+ - archive the history of a webpage
+
 
 Requirements
 ------------
