@@ -7,7 +7,7 @@
 The contents of this file are hosted as a Google Document, which is published
 to the web.
 
-## The Flag
+### The Flag
 
 To flag this file for `curmit`, the following comment is placed at the
 beginning of this Markdown file:
@@ -16,7 +16,7 @@ beginning of this Markdown file:
 See the raw text
 [here](https://raw2.github.com/jacebrowning/curmit/master/docs/sample.md).
 
-## Automatic Update
+### Automatic Update
 
 To synchronize this file with the published content:
 
