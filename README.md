@@ -17,7 +17,7 @@ Some possible use cases:
 Requirements
 ------------
 
-* Python 3.3: http://www.python.org/download/releases/3.3.3/#download
+* Python 3.3: http://www.python.org/download/releases/3.3.4/#download
 * git: http://git-scm.com/downloads
 
 
