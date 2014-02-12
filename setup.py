@@ -6,7 +6,7 @@ Setup script for curmit.
 
 import setuptools
 
-from curmit.curmit import __project__, CLI
+from curmit import __project__, CLI
 
 import os
 if os.path.exists('README.rst'):

@@ -149,7 +149,7 @@ dist: env depends check test tests doc
 .PHONY: upload
 upload: env depends doc
 	$(PYTHON) setup.py register sdist upload
-	$(PYTHON) setup.py bdist_wheel upload
+	# $(PYTHON) setup.py bdist_wheel upload
 	$(MAKE) dev  # restore the development environment
 
 .PHONY: dev
