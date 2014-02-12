@@ -8,10 +8,6 @@ curmit
 Grabs text from a URL and commits it.
 
 
-
-Getting Started
-===============
-
 Requirements
 ------------
 
@@ -44,10 +40,10 @@ Setup
 
 
 Usage
-=====
+-----
 
 To update every flagged file with the current URL text, commit, and push:
 
     curmit
 
-That's it!
+**That's it!**
