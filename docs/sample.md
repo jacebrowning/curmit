@@ -4,12 +4,8 @@
 
 # A Sample File
 
-The contents of this file are hosted as a Google Doc, which is published to
-the web:
-
-[https://docs.google.com/document/d/1cmphl-IBFF-aRcj6n9TZ37YXJMBfmnzPiAGgPNzVj
-NE/pub?embedded=true](https://docs.google.com/document/d/1cmphl-IBFF-
-aRcj6n9TZ37YXJMBfmnzPiAGgPNzVjNE/pub?embedded=true)
+The contents of this file are hosted as a Google Document, which is published
+to the web.
 
 ## The Flag
 
