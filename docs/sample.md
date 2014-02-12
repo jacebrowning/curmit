@@ -2,4 +2,8 @@
 
 
 
+# A Sample File
 
+This contents will automatically be commited to a text file by `curmit`.
+
+**That's cool!**
