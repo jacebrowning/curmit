@@ -1,6 +1,6 @@
 PROJECT := curmit
-PACKAGE := .
-SOURCES := Makefile setup.py curmit.py
+PACKAGE := curmit
+SOURCES := Makefile setup.py $(shell find $(PACKAGE) -name '*.py')
 
 ENV := env
 DEPENDS := $(ENV)/.depends
@@ -68,13 +68,13 @@ README.rst: README.md
 	pandoc -f markdown_github -t rst -o README.rst README.md
 
 .PHONY: apidocs
-apidocs: depends apidocs/$(PROJECT).m.html
-apidocs/$(PROJECT).m.html: $(SOURCES)
-	$(PYTHON) $(PDOC) --html --overwrite curmit.py --html-dir apidocs
+apidocs: depends apidocs/$(PACKAGE)/index.html
+apidocs/$(PACKAGE)/index.html: $(SOURCES)
+	$(PYTHON) $(PDOC) --html --overwrite $(PACKAGE) --html-dir apidocs
 
 .PHONY: read
 read: doc
-	$(OPEN) apidocs/$(PROJECT).m.html
+	$(OPEN) apidocs/$(PACKAGE)/index.html
 	$(OPEN) docs/README-pypi.html
 	$(OPEN) docs/README-github.html
 
@@ -82,11 +82,11 @@ read: doc
 
 .PHONY: pep8
 pep8: depends
-	$(PEP8) curmit.py  --ignore=E501 
+	$(PEP8) $(PACKAGE) --ignore=E501 
 
 .PHONY: pylint
 pylint: depends
-	$(PYLINT) curmit.py  --reports no \
+	$(PYLINT) $(PACKAGE) --reports no \
 	                     --msg-template="{msg_id}:{line:3d},{column}:{msg}" \
 	                     --max-line-length=79 \
 	                     --disable=I0011,W0142,W0511,R0801

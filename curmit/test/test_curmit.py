@@ -8,7 +8,7 @@ import os
 import unittest
 from unittest.mock import patch, Mock
 
-from curmit import main, urltext
+from curmit.curmit import main, urltext
 
 ENV = 'TEST_INTEGRATION'  # environment variable to enable integration tests
 REASON = "'{0}' variable not set".format(ENV)
@@ -30,18 +30,18 @@ class TestCLI(unittest.TestCase):  # pylint: disable=R0904
         """Verify 'curmit --no-commit' can be called."""
         self.assertIs(None, main(['--no-commit']))
 
-    @patch('curmit._run', Mock(return_value=False))
+    @patch('curmit.curmit._run', Mock(return_value=False))
     def test_exit(self):
         """Verify 'curmit' treats False as an error ."""
         self.assertRaises(SystemExit, main, [])
 
-    @patch('curmit._run', Mock(side_effect=KeyboardInterrupt))
+    @patch('curmit.curmit._run', Mock(side_effect=KeyboardInterrupt))
     def test_interrupt(self):
         """Verify 'curmit' treats KeyboardInterrupt as an error."""
         self.assertRaises(SystemExit, main, [])
 
 
-@patch('curmit._run', Mock(return_value=True))  # pylint: disable=R0904
+@patch('curmit.curmit._run', Mock(return_value=True))  # pylint: disable=R0904
 class TestLogging(unittest.TestCase):  # pylint: disable=R0904
     """Integration tests for the 'curmit' logging."""
 
