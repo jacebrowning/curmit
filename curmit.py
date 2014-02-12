@@ -149,7 +149,7 @@ def _run(args, cwd, err):  # pylint: disable=W0613
         git('add', path, _dry=args.no_commit)
         if git('diff', '--cached', '--exit-code'):
             logging.info("committing {}...".format(path))
-            message = "'curmit: {}'".format(url)
+            message = "curmit: {}".format(url)
             git('commit', '-m', message, _show=True, _dry=args.no_commit)
             changes = True
         else:
