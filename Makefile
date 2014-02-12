@@ -104,7 +104,9 @@ test: env depends
 
 .PHONY: tests
 tests: env depends
-	TEST_INTEGRATION=1 $(NOSE) --verbose --stop --cover-package=$(PACKAGE)
+	$(PIP) install html2text
+	TEST_INTEGRATION=1 $(NOSE) --verbose --cover-package=$(PACKAGE) \
+	                                     --cover-min-percent=96
 
 # Cleanup ####################################################################
 

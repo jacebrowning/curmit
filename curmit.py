@@ -19,7 +19,7 @@ try:
     __version__ = get_distribution(__project__).version  # pylint: disable=E1103
 except DistributionNotFound:  # pragma: no cover, manual test
     VERSION = __project__ + '-' + '(local)'
-else:
+else:  # pragma: no cover, manual test
     VERSION = __project__ + '-' + __version__
 CLI = __project__
 
@@ -58,7 +58,7 @@ class WarningFormatter(logging.Formatter, object):
         self.default_format = default_format
         self.verbose_format = verbose_format
 
-    def format(self, record):
+    def format(self, record):  # pragma: no cover, manual test
         """Python 3 hack to change the formatting style dynamically."""
         if record.levelno > logging.INFO:
             self._style._fmt = self.verbose_format  # pylint: disable=W0212
@@ -95,12 +95,12 @@ def main(args=None):
         success = _run(args, os.getcwd(), parser.error)
     except KeyboardInterrupt:
         logging.debug("command cancelled")
+        success = False
+    if success:
+        logging.debug("command succeeded")
     else:
-        if success:
-            logging.debug("command succeeded")
-        else:
-            logging.debug("command failed")
-            sys.exit(1)
+        logging.debug("command failed")
+        sys.exit(1)
 
 
 def _configure_logging(verbosity=0):
@@ -213,6 +213,8 @@ def urltext(url):
 
     out = process.communicate()[0]
     lines = out.decode('utf-8').strip().split('\n')  # pylint: disable=E1101
+    if process.returncode != 0:
+        raise IOError("error running 'html2text'")
 
     return lines
 
