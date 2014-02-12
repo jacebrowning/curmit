@@ -36,7 +36,7 @@ Setup
         curmit: https://docs.google.com/document/d/<DocumentID>/pub?embedded=true
 
 
-For an example, see: [sample.md](https://github.com/jacebrowning/curmit/blob/master/docs/sample.md)
+An example can be found [here](https://github.com/jacebrowning/curmit/blob/master/docs/sample.md).
 
 
 
