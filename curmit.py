@@ -38,6 +38,7 @@ RE_FLAG = re.compile(r"""
 # Logging settings
 DEFAULT_LOGGING_FORMAT = "%(message)s"
 VERBOSE_LOGGING_FORMAT = "%(levelname)s: %(message)s"
+VERBOSE2_LOGGING_FORMAT = "[%(levelname)-8s] %(message)s"
 DEFAULT_LOGGING_LEVEL = logging.WARNING
 VERBOSE_LOGGING_LEVEL = logging.INFO
 VERBOSE2_LOGGING_LEVEL = logging.DEBUG
@@ -117,7 +118,7 @@ def _configure_logging(verbosity=0):
         verbose_format = VERBOSE_LOGGING_FORMAT
     else:
         level = VERBOSE2_LOGGING_LEVEL
-        default_format = verbose_format = VERBOSE_LOGGING_FORMAT
+        default_format = verbose_format = VERBOSE2_LOGGING_FORMAT
 
     # Set a custom formatter
     logging.basicConfig(level=level)
@@ -132,6 +133,7 @@ def _run(args, cwd, err):  # pylint: disable=W0613
     @param err: function to call for CLI errors
     """
     git('reset', _dry=args.no_commit)
+    changes = False
 
     for path, header, url in flagged(cwd):
         lines = header + urltext(url)
@@ -143,14 +145,19 @@ def _run(args, cwd, err):  # pylint: disable=W0613
             with open(path, 'w') as outfile:
                 for line in lines:
                     outfile.write(line + '\n')
-        git('add', path, _dry=args.no_commit)
 
-    if git('diff', '--cached', '--exit-code'):
-        logging.info("committing changes...")
-        git('commit', '-m', "curmit", _show=True, _dry=args.no_commit)
+        git('add', path, _dry=args.no_commit)
+        if git('diff', '--cached', '--exit-code'):
+            logging.info("committing {}...".format(path))
+            message = "'curmit: {}'".format(url)
+            git('commit', '-m', message, _show=True, _dry=args.no_commit)
+            changes = True
+        else:
+            logging.info("no change: {}".format(path))
+
+    if changes:
+        logging.info("pushing changes...")
         git('push', _show=True, _dry=args.no_commit)
-    else:
-        logging.info("no changes to commit")
 
     return True
 
@@ -195,7 +202,7 @@ def flagged(cwd):
                         yield path, header, url
 
             except UnicodeDecodeError:
-                logging.debug("not a text file: {}".format(path))
+                logging.debug("skipped: {}".format(path))
 
 
 def urltext(url):
@@ -203,16 +210,25 @@ def urltext(url):
 
     logging.info("grabbing {}...".format(url))
 
-    # Build command
-    args = [sys.executable, '-m', 'html2text']
-    args.append(url)
+    # Build commands
+    args2 = [sys.executable, '-m', 'html2text']
+    args2.append(url)
+    args1 = args2.copy()
+    if 'docs.google.com' in url:
+        args1.append('--google-doc')
 
-    # Run command
-    logging.debug("$ {}".format(' '.join(str(a) for a in args)))
-    process = subprocess.Popen(args, stdout=subprocess.PIPE)
+    # Try commands
+    for args in (args1, args2):
+        logging.debug("$ {}".format(' '.join(str(a) for a in args)))
+        process = subprocess.Popen(args, stdout=subprocess.PIPE)
+        out = process.communicate()[0]
+        lines = out.decode('utf-8').strip().split('\n')  # pylint: disable=E1101
+        if process.returncode == 0:
+            break
+        elif args != args2:
+            logging.warning("trying again with different arguments...")
 
-    out = process.communicate()[0]
-    lines = out.decode('utf-8').strip().split('\n')  # pylint: disable=E1101
+    # Check for errors
     if process.returncode != 0:
         raise IOError("error running 'html2text'")
 

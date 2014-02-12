@@ -106,7 +106,7 @@ test: env depends
 tests: env depends
 	$(PIP) install html2text
 	TEST_INTEGRATION=1 $(NOSE) --verbose --cover-package=$(PACKAGE) \
-	                                     --cover-min-percent=96
+	                                     --cover-min-percent=95
 
 # Cleanup ####################################################################
 

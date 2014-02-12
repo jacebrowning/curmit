@@ -8,10 +8,13 @@ import os
 import unittest
 from unittest.mock import patch, Mock
 
-from curmit import main
+from curmit import main, urltext
 
 ENV = 'TEST_INTEGRATION'  # environment variable to enable integration tests
 REASON = "'{0}' variable not set".format(ENV)
+
+# This published document cannot be parsed as a Google doc by 'html2text'
+STRANGE_URL = "https://docs.google.com/document/d/1DXQk7Qnd0wCBZ4T8GcUHcMMc2oVPMjXOxMIeyfLQ4v4/pub?embedded=true"  # pylint: disable=C0301
 
 
 class TestCLI(unittest.TestCase):  # pylint: disable=R0904
@@ -37,9 +40,10 @@ class TestCLI(unittest.TestCase):  # pylint: disable=R0904
         """Verify 'curmit' treats KeyboardInterrupt as an error."""
         self.assertRaises(SystemExit, main, [])
 
+
 @patch('curmit._run', Mock(return_value=True))  # pylint: disable=R0904
 class TestLogging(unittest.TestCase):  # pylint: disable=R0904
-    """Integration tests for the Doorstop CLI logging."""
+    """Integration tests for the 'curmit' logging."""
 
     def test_verbose_1(self):
         """Verify verbose level 1 can be set."""
@@ -52,3 +56,16 @@ class TestLogging(unittest.TestCase):  # pylint: disable=R0904
     def test_verbose_3(self):
         """Verify verbose level 3 can be set."""
         self.assertIs(None, main(['-vvv']))
+
+
+@unittest.skipUnless(os.getenv(ENV), REASON)  # pylint: disable=R0904
+class TestUrlText(unittest.TestCase):  # pylint: disable=R0904
+    """Integration tests for getting URL text."""
+
+    def test_invalid_google_doc(self):
+        """Verify that 'html2text' handles strange Google Documents."""
+        self.assertIsInstance(urltext(STRANGE_URL), list)
+
+    def test_invalid(self):
+        """Verify an exception is raised on an invalid URL."""
+        self.assertRaises(IOError, urltext, "")
