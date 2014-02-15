@@ -42,7 +42,7 @@ Setup
         curmit: https://docs.google.com/document/d/<DocumentID>/pub?embedded=true
 
 
-An example can be found [here](https://github.com/jacebrowning/curmit/blob/master/docs/sample.md).
+    with your desired URL. An example can be found [here](https://github.com/jacebrowning/curmit/blob/master/docs/sample.md).
 
 
 
