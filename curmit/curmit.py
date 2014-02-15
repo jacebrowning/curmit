@@ -10,19 +10,8 @@ import sys
 import subprocess
 import argparse
 import logging
-from pkg_resources import get_distribution, DistributionNotFound
 
-
-__project__ = 'curmit'
-__version__ = None  # required for initial installation
-try:
-    __version__ = get_distribution(__project__).version  # pylint: disable=E1103
-except DistributionNotFound:  # pragma: no cover, manual test
-    VERSION = __project__ + '-' + '(local)'
-else:  # pragma: no cover, manual test
-    VERSION = __project__ + '-' + __version__
-CLI = __project__
-
+from curmit import CLI, VERSION
 
 # User settings
 IGNORED_DIRNAMES = ('.git', 'env', '.cache')
@@ -168,6 +157,7 @@ def flagged(cwd):
 
     @return: generator of path, flag text, URL
     """
+    logging.info("looking for flagged files...")
     for root, dirnames, filenames in os.walk(cwd):
 
         # Remove ignored directory names
