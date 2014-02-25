@@ -57,6 +57,7 @@ $(DEPENDS):
 
 .PHONY: doc
 doc: readme apidocs
+	$(BIN)/$(PACKAGE)$(EXE)
 
 .PHONY: readme
 readme: depends docs/README-github.html docs/README-pypi.html
