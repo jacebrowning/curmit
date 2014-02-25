@@ -24,12 +24,14 @@ Requirements
 Installation
 ------------
 
-curmit can be installed with ``pip``:
+curmit can be installed with 'pip':
 
     pip install curmit
 
 Or directly from the source code:
 
+    git clone https://github.com/jacebrowning/curmit.git
+    cd curmit
     python setup.py install
 
 
