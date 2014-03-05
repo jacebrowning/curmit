@@ -213,7 +213,8 @@ def urltext(url):
         logging.debug("$ {}".format(' '.join(str(a) for a in args)))
         process = subprocess.Popen(args, stdout=subprocess.PIPE)
         out = process.communicate()[0]
-        lines = out.decode('utf-8').strip().split('\n')  # pylint: disable=E1101
+        text = out.decode('utf-8')  # pylint: disable=E1101
+        lines = text.strip().split('\n')
         if process.returncode == 0:
             break
         elif args != args2:
