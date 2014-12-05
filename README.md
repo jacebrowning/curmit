@@ -1,39 +1,42 @@
 curmit
 ======
 
-[![Build Status](https://travis-ci.org/jacebrowning/curmit.png?branch=master)](https://travis-ci.org/jacebrowning/curmit)
-[![Coverage Status](https://coveralls.io/repos/jacebrowning/curmit/badge.png?branch=master)](https://coveralls.io/r/jacebrowning/curmit?branch=master)
-[![PyPI Version](https://badge.fury.io/py/curmit.png)](http://badge.fury.io/py/curmit)
+[![Build Status](http://img.shields.io/travis/jacebrowning/curmit/master.svg)](https://travis-ci.org/jacebrowning/curmit)
+[![Coverage Status](http://img.shields.io/coveralls/jacebrowning/curmit/master.svg)](https://coveralls.io/r/jacebrowning/curmit)
+[![Scrutinizer Code Quality](http://img.shields.io/scrutinizer/g/jacebrowning/curmit.svg)](https://scrutinizer-ci.com/g/jacebrowning/curmit/?branch=master)
+[![PyPI Version](http://img.shields.io/pypi/v/curmit.svg)](https://pypi.python.org/pypi/curmit)
+[![PyPI Downloads](http://img.shields.io/pypi/dm/curmit.svg)](https://pypi.python.org/pypi/curmit)
 
 Grabs text from a URL and commits it.
 
 Some possible use cases:
 
- - collaborate on Markdown/LaTeX using Google Drive
- - incorporate and link to online code snippets 
- - archive the history of a webpage
-
+ * collaborate on Markdown/LaTeX using Google Drive
+ * incorporate and link to online code snippets 
+ * archive the history of a webpage
 
 Requirements
 ------------
 
-* Python 3.3: http://www.python.org/download/releases/3.3.4/#download
-* git: http://git-scm.com/downloads
-
+* Python 3.3+
+* Git
 
 Installation
 ------------
 
-curmit can be installed with 'pip':
+curmit can be installed with pip:
 
-    pip install curmit
+```
+$ pip install curmit
+```
 
-Or directly from the source code:
+or directly from the source code:
 
-    git clone https://github.com/jacebrowning/curmit.git
-    cd curmit
-    python setup.py install
-
+```
+$ git clone https://github.com/jacebrowning/curmit.git
+$ cd curmit
+$ python setup.py install
+```
 
 Setup
 -----
@@ -43,17 +46,15 @@ Setup
 
         curmit: https://docs.google.com/document/d/<DocumentID>/pub?embedded=true
 
-
     with your desired URL. An example can be found [here](https://github.com/jacebrowning/curmit/blob/master/docs/sample.md).
-
-
 
 Usage
 -----
 
 To update every flagged file with the current URL text, commit, and push:
 
-    curmit
-
+```
+$ curmit
+```
 
 **That's it!**

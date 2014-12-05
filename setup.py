@@ -20,7 +20,7 @@ setuptools.setup(
     version=__version__,
 
     description="Grabs text from a URL and commits it.",
-    url='http://github.com/jacebrowning/curmit',
+    url='https://github.com/jacebrowning/curmit',
     author='Jace Browning',
     author_email='jacebrowning@gmail.com',
 
@@ -29,7 +29,7 @@ setuptools.setup(
     entry_points={'console_scripts': [CLI + ' = curmit.curmit:main']},
 
     long_description=(README + '\n' + CHANGES),
-    license='LGPL',
+    license='MIT',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
@@ -41,5 +41,5 @@ setuptools.setup(
         'Topic :: Software Development :: Version Control',
     ],
 
-    install_requires=["html2text==3.200.3"],
+    install_requires=open('requirements.txt').readlines(),
 )

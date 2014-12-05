@@ -7,7 +7,8 @@ with-doctest=1
 with-coverage=1
 cover-package=curmit
 cover-erase=1
-cover-min-percentage=46
+cover-min-percentage=35
 
 verbosity=1
 logging-level=DEBUG
+logging-format=[%(levelname)-8s] %(message)s
