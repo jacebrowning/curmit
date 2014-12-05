@@ -12,16 +12,15 @@ to the web.
 To flag this file for `curmit`, the following comment was placed at the
 beginning of this Markdown file:
 
-   <!-- curmit: https://docs.google.com/document/d/1cmphl-IBFF-aRcj6n9TZ37YXJMBfmnzPiAGgPNzVjNE/pub?embedded=true -->    
+    <!-- curmit: https://docs.google.com/document/d/1cmphl-IBFF-aRcj6n9TZ37YXJMBfmnzPiAGgPNzVjNE/pub?embedded=true -->    
 See the raw text
-
-[here](https://raw2.github.com/jacebrowning/curmit/master/docs/sample.md).
+[here](https://raw.github.com/jacebrowning/curmit/master/docs/sample.md).
 
 ### Automatic Update
 
 To synchronize this file with the published content:
 
-   curmit    
+    curmit  
 Which does the following:
 
 1. searches the tree for files containing "flags"
