@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
-"""
-Tests for curmit.
-"""
+"""Tests for curmit."""
 
 import os
 import unittest
@@ -55,8 +53,8 @@ class TestLogging(unittest.TestCase):  # pylint: disable=R0904
         self.assertIs(None, main(['-vvv']))
 
 
-@unittest.skipUnless(os.getenv(ENV), REASON)  # pylint: disable=R0904
-class TestUrlText(unittest.TestCase):  # pylint: disable=R0904
+@unittest.skipUnless(os.getenv(ENV), REASON)  # pylint: disable=R0903,R0904
+class TestUrlText(unittest.TestCase):
     """Integration tests for getting URL text."""
 
     def test_invalid(self):

@@ -4,12 +4,6 @@ ifndef TRAVIS
 	PYTHON_MINOR := 4
 endif
 
-# Test runner settings
-ifndef TEST_RUNNER
-	# options are: nose, pytest
-	TEST_RUNNER := nose
-endif
-
 # Project settings
 PROJECT := curmit
 PACKAGE := curmit
@@ -153,7 +147,7 @@ pep8: .depends-ci
 
 .PHONY: pep257
 pep257: .depends-ci
-	$(PEP257) $(PACKAGE)
+	$(PEP257) $(PACKAGE) --ignore=D102
 
 .PHONY: pylint
 pylint: .depends-dev
@@ -166,32 +160,12 @@ fix: .depends-dev
 # Testing ####################################################################
 
 .PHONY: test
-test: test-$(TEST_RUNNER)
-
-.PHONY: tests
-tests: tests-$(TEST_RUNNER)
-
-# nosetest commands
-
-.PHONY: test-nose
-test-nose: .depends-ci
+test: .depends-ci
 	$(NOSE) --config=.noserc
 
-.PHONY: tests-nose
-tests-nose: .depends-ci
+.PHONY: tests
+tests: .depends-ci
 	TEST_INTEGRATION=1 $(NOSE) --config=.noserc --cover-package=$(PACKAGE) -xv
-
-# pytest commands
-
-.PHONY: test-pytest
-test-pytest: .depends-ci
-	$(COVERAGE) run --source $(PACKAGE) -m py.test $(PACKAGE) --doctest-modules
-	$(COVERAGE) report --show-missing --fail-under=34
-
-.PHONY: tests-pytest
-tests-pytest: .depends-ci
-	TEST_INTEGRATION=1 $(MAKE) test
-	$(COVERAGE) report --show-missing --fail-under=97
 
 # Cleanup ####################################################################
 

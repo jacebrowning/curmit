@@ -1,3 +1,1 @@
-"""
-Package for curmit tests.
-"""
+"""Package for curmit tests."""
