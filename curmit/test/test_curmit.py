@@ -6,7 +6,7 @@ import os
 import unittest
 from unittest.mock import patch, Mock
 
-from curmit.curmit import main, urltext
+from curmit.curmit import main
 
 ENV = 'TEST_INTEGRATION'  # environment variable to enable integration tests
 REASON = "'{0}' variable not set".format(ENV)
@@ -51,12 +51,3 @@ class TestLogging(unittest.TestCase):  # pylint: disable=R0904
     def test_verbose_3(self):
         """Verify verbose level 3 can be set."""
         self.assertIs(None, main(['-vvv']))
-
-
-@unittest.skipUnless(os.getenv(ENV), REASON)  # pylint: disable=R0903,R0904
-class TestUrlText(unittest.TestCase):
-    """Integration tests for getting URL text."""
-
-    def test_invalid(self):
-        """Verify an exception is raised on an invalid URL."""
-        self.assertRaises(IOError, urltext, "")

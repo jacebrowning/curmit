@@ -200,7 +200,7 @@ def urltext(url):
     logging.info("grabbing {}...".format(url))
 
     # Build commands
-    args2 = [sys.executable, '-m', 'html2text']
+    args2 = [sys.executable, '-m', 'html2text.cli']
     args2.append(url)
     args1 = args2.copy()
     if 'docs.google.com' in url:
