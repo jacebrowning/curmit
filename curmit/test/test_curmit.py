@@ -66,3 +66,7 @@ class TestUrlText(unittest.TestCase):
         for line in lines:
             logging.debug(line)
         self.assertIn("Sample File", lines[0])
+
+    def test_invalid(self):
+        """Verify an exception is raised on an invalid URL."""
+        self.assertRaises(IOError, urltext, "")
