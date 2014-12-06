@@ -182,15 +182,15 @@ def flagged(cwd):
                         else:
                             match = RE_FLAG.search(line)
                             if match:
-                                logging.info("found flag in: {}".format(path))
                                 url = match.group('url')
 
                         if index >= MAX_SEARCH_LINE:
                             break
+                    if url:
+                        logging.info("found flag in: {}".format(path))
+                        yield path, header, url
                     else:
                         logging.info("no flag in: {}".format(path))
-                    if url:
-                        yield path, header, url
 
             except UnicodeDecodeError:
                 logging.debug("skipped: {}".format(path))
