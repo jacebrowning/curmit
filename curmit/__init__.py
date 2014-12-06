@@ -1,6 +1,4 @@
-"""
-Package for curmit.
-"""
+"""Package for curmit."""
 
 __project__ = 'curmit'
 __version__ = '0.1.2'

@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
-"""
-Grabs text from a URL and commits it.
-"""
+"""Grabs text from a URL and commits it."""
 
 import os
 import re
@@ -33,15 +31,17 @@ VERBOSE_LOGGING_LEVEL = logging.INFO
 VERBOSE2_LOGGING_LEVEL = logging.DEBUG
 
 
-class HelpFormatter(argparse.HelpFormatter):
+class HelpFormatter(argparse.HelpFormatter):  # pylint: disable=R0903
+
     """Command-line help text formatter with wider help text."""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, max_help_position=40, **kwargs)
 
 
-class WarningFormatter(logging.Formatter, object):
-    """Logging formatter that always displays a verbose logging
-    format for logging level WARNING or higher."""
+class WarningFormatter(logging.Formatter, object):  # pylint: disable=R0903
+
+    """Logging formatter with verbose logging for WARNING and higher."""
 
     def __init__(self, default_format, verbose_format, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -66,7 +66,6 @@ SHARED = {'formatter_class': HelpFormatter, 'parents': [DEBUG]}
 
 def main(args=None):
     """Process command-line arguments and run the program."""
-
     # Main parser
     parser = argparse.ArgumentParser(prog=CLI, description=__doc__, **SHARED)
     parser.add_argument('--no-update', action='store_true',
@@ -95,7 +94,6 @@ def main(args=None):
 
 def _configure_logging(verbosity=0):
     """Configure logging using the provided verbosity level (0+)."""
-
     # Configure the logging level and format
     if verbosity == 0:
         level = DEFAULT_LOGGING_LEVEL
@@ -117,6 +115,7 @@ def _configure_logging(verbosity=0):
 
 def _run(args, cwd, err):  # pylint: disable=W0613
     """Process arguments and run the main program.
+
     @param args: Namespace of CLI arguments
     @param cwd: current working directory
     @param err: function to call for CLI errors
@@ -152,7 +151,7 @@ def _run(args, cwd, err):  # pylint: disable=W0613
     return True
 
 
-def flagged(cwd):
+def flagged(cwd):  # pylint: disable=R0912
     """Yield every text file containing a flag.
 
     @return: generator of path, flag text, URL
@@ -198,7 +197,6 @@ def flagged(cwd):
 
 def urltext(url):
     """Get lines of text from a URL."""
-
     logging.info("grabbing {}...".format(url))
 
     # Build commands
