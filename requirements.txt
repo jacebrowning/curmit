@@ -1,1 +1,1 @@
-html2text==3.200.3
+html2text==2014.12.5
