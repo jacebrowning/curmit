@@ -44,9 +44,9 @@ Setup
 1. Create a new text file
 2. Add the following somewhere in the first few lines:
 
-        curmit: https://docs.google.com/document/d/<DocumentID>/pub?embedded=true
+        curmit: <http://example.com>
 
-    with your desired URL. An example can be found [here](https://github.com/jacebrowning/curmit/blob/master/docs/sample.md).
+    with your desired URL. An example using a Google Docs can be found [here](https://github.com/jacebrowning/curmit/blob/master/docs/sample.md).
 
 Usage
 -----
