@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
-"""
-Setup script for curmit.
-"""
+"""Setup script for curmit."""
 
 import setuptools
 
@@ -12,8 +10,9 @@ import os
 if os.path.exists('README.rst'):
     README = open('README.rst').read()
 else:
-    README = ""
+    README = ""  # a placeholder until README is generated on release
 CHANGES = open('CHANGES.md').read()
+
 
 setuptools.setup(
     name=__project__,
@@ -36,7 +35,10 @@ setuptools.setup(
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
         'Topic :: Software Development :: Documentation',
         'Topic :: Software Development :: Version Control',
     ],

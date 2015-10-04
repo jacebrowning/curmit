@@ -1,1 +1,1 @@
-"""Package for curmit tests."""
+"""Unit tests for the `curmit` package."""

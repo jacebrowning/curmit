@@ -27,7 +27,7 @@ Installation
 curmit can be installed with pip:
 
 ```
-$ pip install curmit
+$ pip3 install curmit
 ```
 
 or directly from the source code:
@@ -35,7 +35,7 @@ or directly from the source code:
 ```
 $ git clone https://github.com/jacebrowning/curmit.git
 $ cd curmit
-$ python setup.py install
+$ python3 setup.py install
 ```
 
 Setup
