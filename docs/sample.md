@@ -12,7 +12,10 @@ to the web.
 To flag this file for `curmit`, the following comment was placed at the
 beginning of this Markdown file:  
   
-    &lt;!-- curmit: https://docs.google.com/document/d/1UamfLkA-DvIVXPKoFQpSQDIUDANPTfyyXYMlUHmKpp4/pub?embedded=true --&gt;    
+```  
+<!-- curmit: https://docs.google.com/document/d/1UamfLkA-
+DvIVXPKoFQpSQDIUDANPTfyyXYMlUHmKpp4/pub?embedded=true -->  
+```  
   
 See the raw text
 [here](https://raw.github.com/jacebrowning/curmit/master/docs/sample.md).  
@@ -21,7 +24,9 @@ See the raw text
   
 To synchronize this file with the published content:  
   
-    curmit  
+```  
+$ curmit  
+```  
   
 Which does the following:  
   
