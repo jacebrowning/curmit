@@ -4,4 +4,4 @@ __project__ = 'curmit'
 __version__ = '0.2.dev0'
 
 CLI = 'curmit'
-VERSION = __project__ + '-' + __version__
+VERSION = "{0} v{1}".format(__project__, __version__)
