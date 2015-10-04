@@ -14,7 +14,7 @@ env
 # Generated documentation
 docs/gen
 apidocs
-docs/*.html
+/*.html
 *.rst
 docs/*.png
 
@@ -25,7 +25,9 @@ docs/*.png
 *.gdraw
 
 # Testing and coverage results
+.pytest
 .coverage
+htmlcov
 pyunit.xml
 
 # Build and release directories

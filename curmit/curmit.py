@@ -125,7 +125,7 @@ def _run(args, cwd, err):  # pylint: disable=W0613
 
     for path, header, url in flagged(cwd):
         lines = header + urltext(url)
-        logging.info("updating {}...".format(path))
+        logging.info("updating %s...", path)
         if args.no_update:
             for line in lines:
                 print(line)
@@ -136,13 +136,13 @@ def _run(args, cwd, err):  # pylint: disable=W0613
 
         git('add', path, _dry=args.no_commit)
         if git('diff', '--cached', '--exit-code'):
-            logging.info("committing {}...".format(path))
+            logging.info("committing %s...", path)
             message = "curmit: {}".format(url.replace("/pub?embedded=true",
                                                       '/edit'))
             git('commit', '-m', message, _show=True, _dry=args.no_commit)
             changes = True
         else:
-            logging.info("no change: {}".format(path))
+            logging.info("no change: %s", path)
 
     if changes:
         logging.info("pushing changes...")
@@ -186,18 +186,18 @@ def flagged(cwd):  # pylint: disable=R0912
                         if index >= MAX_SEARCH_LINE:
                             break
                     if url:
-                        logging.info("found flag in: {}".format(path))
+                        logging.info("found flag in: %s", path)
                         yield path, header, url
                     else:
-                        logging.info("no flag in: {}".format(path))
+                        logging.info("no flag in: %s", path)
 
             except UnicodeDecodeError:
-                logging.debug("skipped: {}".format(path))
+                logging.debug("skipped: %s", path)
 
 
 def urltext(url):
     """Get lines of text from a URL."""
-    logging.info("grabbing {}...".format(url))
+    logging.info("grabbing %s...", url)
 
     # Build commands
     args2 = [sys.executable, '-m', 'html2text.__init__']
@@ -208,7 +208,7 @@ def urltext(url):
 
     # Try commands
     for args in (args1, args2):
-        logging.debug("$ {}".format(' '.join(str(a) for a in args)))
+        logging.debug("$ %s", ' '.join(str(arg) for arg in args))
         process = subprocess.Popen(args, stdout=subprocess.PIPE)
         out = process.communicate()[0]
         text = out.decode('utf-8')  # pylint: disable=E1101
@@ -231,7 +231,7 @@ def git(*args, _show=False, _dry=False):
         args = ['git #'] + list(args)
     else:
         args = ['git'] + list(args)
-    logging.debug("$ {}".format(' '.join(str(a) for a in args)))
+    logging.debug("$ %s", ' '.join(str(arg) for arg in args))
     if _dry:
         return 0
     if _show:
