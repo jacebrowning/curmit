@@ -30,7 +30,7 @@ setuptools.setup(
     long_description=(README + '\n' + CHANGES),
     license='MIT',
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
