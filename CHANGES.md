@@ -1,6 +1,6 @@
 # Revision History
 
-## 1.0 (unreleased)
+## 1.0 (2015/10/03)
 
 - Updated `html2text` to 2015.2.18.
 
